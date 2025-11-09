@@ -1,10 +1,5 @@
 import styled from "@emotion/styled";
 
-type TabBarProps = {
-  current: "stream" | "chat";
-  onViewChange: (view: "stream" | "chat") => void;
-};
-
 const StyledTabBar = styled.div`
   display: flex;
   gap: 8px;
@@ -24,6 +19,10 @@ const StyledTab = styled.button<{ isActive: boolean }>`
   color: ${(props) => (props.isActive ? "#fff" : "var(--primary)")};
   cursor: pointer;
 `;
+interface TabBarProps {
+  current: "stream" | "chat";
+  onViewChange: (view: "stream" | "chat") => void;
+}
 
 export function TabBar({ current, onViewChange }: TabBarProps) {
   return (

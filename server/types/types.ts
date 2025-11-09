@@ -7,7 +7,22 @@ export type Bindings = {
 export interface Movie {
   id: number;
   title: string;
-  originalTitle: string;
-  releaseDate: string;
-  overview: string;
+  year: number;
+  posterPath: string;
+  genres: string[];
+}
+
+export interface AIRecommendation {
+  title: string;
+  year: number;
+  reason: string;
+  matchPercentage: number;
+}
+export interface Recommendation {
+  title: string;
+  year: number;
+  posterPath: string;
+  genres: string[];
+  reason: string;
+  matchPercentage: number;
 }

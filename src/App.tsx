@@ -10,7 +10,7 @@ const StyledContainer = styled.section`
   display: flex;
   flex-direction: column;
   max-width: 720px;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0 auto;
   padding: 6.4rem 3.2rem;
 `;

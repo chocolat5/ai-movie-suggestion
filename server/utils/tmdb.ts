@@ -1,4 +1,5 @@
 import { Movie } from "../types/types";
+import { getGenreNames } from "./genres";
 
 const baseURL = "https://api.themoviedb.org/3";
 const options = {
@@ -37,9 +38,9 @@ export async function searchMovies(
     response = temData.map((r: any) => ({
       id: r.id,
       title: r.title,
-      originalTitle: r.original_title,
-      releaseDate: r.release_date,
-      overview: r.overview,
+      year: r.release_date ? new Date(r.release_date).getFullYear() : 0,
+      posterPath: r.poster_path,
+      genres: getGenreNames(r.genre_ids),
     }));
   } catch (err) {
     console.error(err);

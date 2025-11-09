@@ -3,67 +3,15 @@ import type { FormEvent } from "react";
 
 import styled from "@emotion/styled";
 
-import {
-  ArrowUp as ArrowUpIcon,
-  Asterisk as AsteriskIcon,
-} from "@/components/ui/Icons";
-import type { Message } from "@/types/types";
+import { ArrowUp as ArrowUpIcon } from "@/components/ui/Icons";
+import { MovieCard } from "@/components/ui/MovieCard";
+import type { AssistantMessage } from "@/types/types";
 import { getChat } from "@/utils/api";
 
-const StyledChatContainer = styled.div`
-  position: relative;
-  margin: 32px 8px;
-  padding: 0 1.2rem;
-  flex-grow: 1;
-  /* overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable both-edges;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc; */
-`;
-
-const StyledMessage = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-
-  &:not(:first-of-type) {
-    margin-top: 20px;
-  }
-
-  &.-user {
-    justify-self: end;
-    width: 70%;
-  }
-
-  &.-assistant {
-    width: fit-content;
-  }
-`;
-
-const StyledMessageWrap = styled.div`
-  width: 100%;
-`;
-
-const StyledRole = styled.p`
-  margin-bottom: 4px;
-  font-size: 1.3rem;
-  font-weight: 600;
-  line-height: 1.2;
-`;
-
 const StyledMessageText = styled.div`
-  padding: 12px 16px;
-  background-color: #fff;
-  border-radius: 12px;
+  margin: 24px 0;
   font-size: 1.4rem;
   line-height: 1.6;
-  &.-user {
-    border-bottom-right-radius: 0;
-  }
-  &.-assistant {
-    border-bottom-left-radius: 0;
-  }
 `;
 
 const StyledFormWrap = styled.div`
@@ -108,8 +56,13 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledList = styled.div`
+  display: grid;
+  gap: 20px;
+`;
+
 export function ChatView() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [result, setResult] = useState<AssistantMessage | null>(null);
 
   async function handleChat(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -122,54 +75,24 @@ export function ChatView() {
     if (!userInput) return;
 
     // clear textarea
-    e.currentTarget.reset();
-
-    // update chats messages with user's input
-    setMessages((prev) => [...prev, { role: "user", text: userInput.trim() }]);
+    // e.currentTarget.reset();
 
     // Add empty assistant message
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", text: "", isLoading: true },
-    ]);
+    setResult({ role: "assistant", introText: "", isLoading: true });
 
     // sream and update the last message
-    const reponseText = await getChat(userInput);
+    const res = await getChat(userInput);
 
-    setMessages((prev) => {
-      // copy array
-      const newMesasges = [...prev];
-      // get last message
-      const lastIndex = newMesasges.length - 1;
-
-      // add chunk to the last message
-      newMesasges[lastIndex] = {
-        role: "assistant",
-        text: reponseText,
-        isLoading: false,
-      };
-
-      return newMesasges;
+    setResult({
+      role: "assistant",
+      recommendations: res.recommendations,
+      introText: res.introText,
+      isLoading: false,
     });
   }
 
   return (
     <>
-      {messages.length > 0 && (
-        <StyledChatContainer>
-          {messages.map((msg) => (
-            <StyledMessage key={msg.text} className={`-${msg.role}`}>
-              {msg.role === "assistant" && <AsteriskIcon />}
-              <StyledMessageWrap>
-                <StyledRole>{msg.role}</StyledRole>
-                <StyledMessageText className={`-${msg.role}`}>
-                  {msg.isLoading ? "..." : msg.text}
-                </StyledMessageText>
-              </StyledMessageWrap>
-            </StyledMessage>
-          ))}
-        </StyledChatContainer>
-      )}
       <StyledFormWrap>
         <StyledForm method="post" onSubmit={handleChat}>
           <StyledTextarea
@@ -183,6 +106,26 @@ export function ChatView() {
           </StyledButton>
         </StyledForm>
       </StyledFormWrap>
+      {result && (
+        <>
+          {result.isLoading ? (
+            <StyledMessageText>Preparing recommendations...</StyledMessageText>
+          ) : (
+            <>
+              {result.recommendations && (
+                <>
+                  <StyledMessageText>{result.introText}</StyledMessageText>
+                  <StyledList>
+                    {result?.recommendations.map((r) => (
+                      <MovieCard key={r.title} movie={r} />
+                    ))}
+                  </StyledList>
+                </>
+              )}
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }
