@@ -1,65 +1,40 @@
 import { useState } from "react";
+
 import styled from "@emotion/styled";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-// import "./App.css";
 
-const StyledLogo = styled.img`
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-  :hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  &.react {
-    animation: logo-spin infinite 20s linear;
-    :hover {
-      filter: drop-shadow(0 0 2em #61dafbaa);
-    }
-  }
-  @keyframes logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+import { ChatView } from "@/components/models/ChatView";
+import { StreamView } from "@/components/models/StreamView";
+import { TabBar } from "@/components/ui/TabBar";
+
+const StyledContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 6.4rem 3.2rem;
 `;
 
-const StyledCard = styled.div`
-  padding: 2em;
-`;
-
-const StyledText = styled.p`
-  color: #888;
+const StyledTitle = styled.h1`
+  font-size: 2.4rem;
+  font-weight: 600;
+  text-align: center;
 `;
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [view, setView] = useState<"stream" | "chat">("chat");
 
   return (
-    <>
+    <StyledContainer>
+      <StyledTitle>AI Movie Suggestion</StyledTitle>
+      <p>
+        Type your favorite movies from all time or movies you liked recently
+      </p>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <StyledLogo src={viteLogo} alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <StyledLogo src={reactLogo} className="react" alt="React logo" />
-        </a>
+        <TabBar current={view} onViewChange={setView} />
+        {view === "chat" ? <ChatView /> : <StreamView />}
       </div>
-      <h1>Vite + React</h1>
-      <StyledCard>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </StyledCard>
-      <StyledText>Click on the Vite and React logos to learn more</StyledText>
-    </>
+    </StyledContainer>
   );
 }
 

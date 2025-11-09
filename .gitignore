@@ -87,4 +87,19 @@ web_modules/
 .vscode-test
 .vscode/*
 
+# documents
 /docs
+
+
+# Wrangler
+.wrangler/
+.dev.vars
+*.vars
+.DS_Store
+
+
+# Cloudflare Workers
+.mf/
+.wrangler/
+.dev.vars
+wrangler.toml
