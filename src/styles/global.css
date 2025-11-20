@@ -55,6 +55,8 @@ iframe,
 embed,
 object {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 img {
@@ -63,48 +65,13 @@ img {
   line-height: 0;
 }
 
-/* ========================
-   Variables
-   ======================== */
-:root {
-  --base: #ffe845;
-  --footer: #f5f5f5;
-  --ui: #9a9a9a;
-  --gray: #dddddd;
-  --primary: #131313;
-
-  --uiHover: #8c8c8c;
-  --grayHover: #cdcdcd;
-
-  /* status */
-  --success: #2ecc71;
-  --successBg: #e8f8f0;
-  --info: #5b9bd5;
-  --infoBg: #e8f2ff;
-  --error: #e74c3c;
-  --errorBg: #ffebeb;
-
-  --disabled: 0.5;
-
-  --white: #fff;
-  --black: #131313;
-
-  --base-bg: var(--base);
-  --base-bg-dark: var(--primary);
-  --primary-bg: var(--base);
-
-  --primary-text: var(--primary);
-
-  --main: 580px;
-
-  --radius: 12px;
-
-  --font: monospace;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
 }
 
 /* ========================
@@ -112,8 +79,6 @@ img {
    ======================== */
 :root {
   color-scheme: light;
-  color: var(--color-text);
-  background-color: var(--color-background);
 }
 
 html {
@@ -138,12 +103,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   word-break: break-word;
   word-wrap: break-word;
-  color: var(--primary-text);
-  background-color: var(--base-bg);
-  font-family: var(--font);
+  color: var(--c-text);
+  background-color: var(--c-bg-alt);
+  font-family: "Outfit", sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  font-size: 1.6rem;
+  font-size: var(--fs-base);
   -moz-font-feature-settings: "palt" 1;
   font-feature-settings: "palt" 1;
 }
@@ -157,5 +122,5 @@ a {
 
 button,
 input {
-  font-family: var(--font);
+  font-family: "Outfit", sans-serif;
 }
