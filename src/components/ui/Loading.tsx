@@ -11,8 +11,8 @@ const spin = keyframes`
 `;
 
 const StyledSpinner = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-top-color: var(--c-primary);
   border-right-color: var(--c-primary);
