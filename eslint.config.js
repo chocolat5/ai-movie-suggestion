@@ -1,11 +1,12 @@
 import js from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
 import react from "eslint-plugin-react";
-import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import importPlugin from "eslint-plugin-import";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import { globalIgnores } from "eslint/config";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default [
   globalIgnores(["dist", "node_modules", ".github"]),
@@ -29,6 +30,7 @@ export default [
     plugins: {
       react: react,
       import: importPlugin,
+      "simple-import-sort": simpleImportSort,
     },
     rules: {
       semi: [2, "always"],
@@ -43,6 +45,22 @@ export default [
           svg: "always",
         },
       ],
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            // React系
+            ["^react$", "^react/"],
+            // 外部ライブラリ
+            ["^@?\\w"],
+            // 内部パス（@/から始まる）
+            ["^@/"],
+            // 相対パス
+            ["^\\."],
+          ],
+        },
+      ],
+      "simple-import-sort/exports": "error",
     },
   },
 ];
