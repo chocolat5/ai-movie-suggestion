@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { FormEvent } from "react";
 
 import styled from "@emotion/styled";
+import type { FormEvent } from "react";
 
 import {
   ArrowUp as ArrowUpIcon,
