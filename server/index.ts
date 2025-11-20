@@ -99,6 +99,7 @@ app.post("/api/chat", async (c) => {
       messages: messages,
     });
 
+    // get movies information using tool
     if (response.stop_reason === "tool_use") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const toolResults: any[] = [];
@@ -142,6 +143,7 @@ app.post("/api/chat", async (c) => {
     }
   }
 
+  // create response
   const finalResponse = await ai.messages.create({
     model,
     max_tokens: maxTokens,
