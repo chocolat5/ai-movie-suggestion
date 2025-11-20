@@ -1,11 +1,7 @@
-import { useState } from "react";
-
 import styled from "@emotion/styled";
 
 import { ChatView } from "@/components/models/ChatView";
-import { StreamView } from "@/components/models/StreamView";
 import { Movie as MovieIcon } from "@/components/ui/Icons";
-import { TabBar } from "@/components/ui/TabBar";
 
 const StyledContainer = styled.section`
   display: flex;
@@ -35,9 +31,11 @@ const StyledText = styled.p`
   font-size: var(--fs-md);
 `;
 
-function App() {
-  const [view, setView] = useState<"stream" | "chat">("chat");
+const StyledChatContainer = styled.div`
+  margin: var(--sp-xl) 0 0;
+`;
 
+function App() {
   return (
     <StyledContainer>
       <StyledTitle>
@@ -49,10 +47,9 @@ function App() {
         <br />
         Get movies to watch next!
       </StyledText>
-      <div>
-        <TabBar current={view} onViewChange={setView} />
-        {view === "chat" ? <ChatView /> : <StreamView />}
-      </div>
+      <StyledChatContainer>
+        <ChatView />
+      </StyledChatContainer>
     </StyledContainer>
   );
 }

@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { streamText } from "hono/streaming";
 
 import { recommendationsTool } from "./tools/recommendations";
 import { searchMovieTool } from "./tools/searchMovie";
@@ -180,65 +179,6 @@ app.post("/api/chat", async (c) => {
   }
 
   return c.json({ error: "Failed to generate recommendations" }, 500);
-});
-
-app.post("/api/stream", async (c) => {
-  console.log("POST /stream");
-
-  const ai = new Anthropic({
-    apiKey: c.env.ANTHROPIC_API_KEY,
-  });
-
-  const { text } = await c.req.json();
-
-  const stream = ai.messages.stream({
-    model,
-    max_tokens: maxTokens,
-    system: [
-      {
-        type: "text",
-        text: `You are a movie recommendation expert. Today is ${new Date().toISOString().split("T")[0]}
-
-        IMPORTANT INSTRUCTIONS:
-        - Users may provide movie titles in ANY language (English, Japanese, localized titles, etc.)
-        - Example: "国宝" is a Japanese film, NOT Chinese
-        - Carefully identify the actual movie regardless of title language
-        - Respond in the language the user is using
-
-        Analyze user's movie taste and suggest similar movies they might enjoy.
-
-        If a movie title is ambiguous or could refer to multiple films:
-        - Ask the user for clarification (year, director, or country)
-        `,
-      },
-      // {
-      //   type: "text",
-      //   text: "You are a movie recommendation expert. Based on user's favorite movies, analyze their taste and suggest 3-5 similar movies they haven't seen. Include brief reasons for each recommendation.",
-      // },
-      // {
-      //   type: "text",
-      //   text: "You are an enthusiastic movie buff who loves sharing hidden gems. Recommend movies with brief, engaging descriptions that spark curiosity.",
-      // },
-    ],
-    messages: [
-      {
-        role: "user",
-        content: text,
-      },
-    ],
-  });
-
-  return streamText(c, async (streamWriter) => {
-    for await (const chunk of stream) {
-      if (
-        chunk.type === "content_block_delta" &&
-        chunk.delta.type === "text_delta"
-      ) {
-        // return plain text
-        await streamWriter.write(chunk.delta.text);
-      }
-    }
-  });
 });
 
 export default app;
