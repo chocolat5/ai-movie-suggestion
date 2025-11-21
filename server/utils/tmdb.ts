@@ -32,10 +32,10 @@ export async function searchMovies(
     }
 
     const json = await res.json();
-    const temData = json.results;
+    const tempData = json.results;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    response = temData.map((r: any) => ({
+    response = tempData.map((r: any) => ({
       id: r.id,
       title: r.title,
       year: r.release_date ? new Date(r.release_date).getFullYear() : 0,
