@@ -20,7 +20,7 @@ const StyledMatchChip = styled.div`
   color: var(--c-text-inverse);
   padding: 2px var(--sp-sm);
   border-radius: var(--radius-2xl);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: 600;
   z-index: 1;
 `;
@@ -30,7 +30,7 @@ const StyledPoster = styled.img`
   grid-row: 1 / 2;
   aspect-ratio: 2 / 3;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   border-radius: var(--radius-2xl);
 `;
@@ -83,7 +83,7 @@ const StyledActions = styled.div`
   display: flex;
   gap: var(--sp-sm);
   align-items: center;
-  margin: var(--sp-md) 0;
+  margin: var(--sp-md) 0 0;
 `;
 
 const StyledButton = styled.a`
