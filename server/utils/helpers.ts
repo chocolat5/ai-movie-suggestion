@@ -1,5 +1,5 @@
 import type { AIRecommendation, Recommendation } from "../types/types";
-import { searchMovies } from "./tmdb";
+import { getTrailer, searchMovies } from "./tmdb";
 
 export async function enrichRecommendations(
   recommendations: AIRecommendation[],
@@ -22,24 +22,30 @@ export async function enrichRecommendations(
         }
       }
 
+      const trailerKey = await getTrailer(tmdbData.id, tmdbToken);
+
       if (tmdbData) {
         return {
+          id: tmdbData.id,
           title: tmdbData.title,
           year: rec.year,
           posterPath: tmdbData.posterPath,
           genres: tmdbData.genres,
           reason: rec.reason,
+          trailerKey,
           matchPercentage: rec.matchPercentage,
         };
       }
 
       // Fallback if TMDB search fails
       return {
+        id: 0,
         title: rec.title,
         year: rec.year,
         posterPath: "",
         genres: [],
         reason: rec.reason,
+        trailerKey: "",
         matchPercentage: rec.matchPercentage,
       };
     })
