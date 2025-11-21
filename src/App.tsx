@@ -3,12 +3,15 @@ import styled from "@emotion/styled";
 import { ChatView } from "@/components/models/ChatView";
 import { Movie as MovieIcon } from "@/components/ui/Icons";
 
+const StyledWrap = styled.div`
+  padding: var(--sp-3xl) var(--sp-xl);
+`;
+
 const StyledContainer = styled.section`
   display: flex;
   flex-direction: column;
   max-width: var(--container-sm);
   margin: 0 auto;
-  padding: var(--sp-3xl) var(--sp-xl) 0;
 `;
 
 const StyledTitle = styled.h1`
@@ -31,13 +34,18 @@ const StyledText = styled.p`
   font-size: var(--fs-md);
 `;
 
+const StyledTextTips = styled.p`
+  color: var(--c-text-sub);
+  font-size: var(--fs-sm);
+`;
+
 const StyledChatContainer = styled.div`
   margin: var(--sp-xl) 0 0;
 `;
 
 function App() {
   return (
-    <>
+    <StyledWrap>
       <StyledContainer>
         <StyledTitle>
           <MovieIcon />
@@ -45,14 +53,17 @@ function App() {
         </StyledTitle>
         <StyledText>
           Type your favorite movies from all time or movies you liked recently.
-          <br />
           Get movies to watch next!
         </StyledText>
+        <StyledTextTips>
+          Tip: Include release years or other details for more accurate
+          suggestions (e.g., Kokuho (2025, Japanese) ).
+        </StyledTextTips>
       </StyledContainer>
       <StyledChatContainer>
         <ChatView />
       </StyledChatContainer>
-    </>
+    </StyledWrap>
   );
 }
 
