@@ -15,6 +15,7 @@ const StyledLoading = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: var(--sp-md) 0 0;
 `;
 
 const StyledLoadingMessage = styled.p`
@@ -27,9 +28,6 @@ const StyledIntroText = styled.p`
 `;
 
 const StyledFormWrap = styled.div`
-  position: sticky;
-  bottom: 0;
-  padding-bottom: 12px;
   max-width: var(--container-sm);
   margin: 0 auto;
 `;
@@ -75,7 +73,7 @@ const StyledButton = styled.button`
 `;
 
 const StyledResultWrap = styled.div`
-  max-width: var(--container-md);
+  max-width: var(--container-lg);
   margin: var(--sp-lg) auto;
   padding: 0 var(--sp-xl);
 `;
@@ -83,6 +81,11 @@ const StyledResultWrap = styled.div`
 const StyledList = styled.div`
   display: grid;
   gap: 20px;
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export function ChatView() {
