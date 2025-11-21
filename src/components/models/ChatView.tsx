@@ -3,36 +3,52 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import type { FormEvent } from "react";
 
-import { ArrowUp as ArrowUpIcon } from "@/components/ui/Icons";
+import { ArrowRight as ArrowRightIcon } from "@/components/ui/Icons";
+import { Loading } from "@/components/ui/Loading";
 import { MovieCard } from "@/components/ui/MovieCard";
 import type { AssistantMessage } from "@/types/types";
 import { getChat } from "@/utils/api";
 
-const StyledMessageText = styled.div`
-  margin: 24px 0;
-  font-size: 1.4rem;
-  line-height: 1.6;
+const StyledLoading = styled.div`
+  display: flex;
+  gap: var(--sp-md);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: var(--sp-md) 0 0;
+`;
+
+const StyledLoadingMessage = styled.p`
+  font-size: var(--fs-md);
+`;
+
+const StyledIntroText = styled.p`
+  margin: 0 0 var(--sp-lg);
+  font-size: var(--fs-md);
 `;
 
 const StyledFormWrap = styled.div`
-  position: sticky;
-  bottom: 0;
-  padding-bottom: 12px;
-  background-color: var(--base);
+  max-width: var(--container-sm);
+  margin: 0 auto;
 `;
 
 const StyledForm = styled.form`
   display: grid;
-  padding: 12px;
+  padding: var(--sp-md);
   background-color: #fff;
   border: 2px solid var(--primary);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
 `;
 
 const StyledTextarea = styled.textarea`
   grid-column: 1 / -1;
+
   &:focus {
     outline: none;
+  }
+
+  &::placeholder {
+    color: var(--c-text-light);
   }
 `;
 
@@ -56,9 +72,20 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledResultWrap = styled.div`
+  max-width: var(--container-lg);
+  margin: var(--sp-lg) auto;
+  padding: 0 var(--sp-xl);
+`;
+
 const StyledList = styled.div`
   display: grid;
   gap: 20px;
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export function ChatView() {
@@ -96,25 +123,30 @@ export function ChatView() {
       <StyledFormWrap>
         <StyledForm method="post" onSubmit={handleChat}>
           <StyledTextarea
-            placeholder="Message..."
+            placeholder="Interstellar, Kokuho (2025) ..."
             name="user-input"
             rows={4}
             required
           />
           <StyledButton aria-label="Send">
-            <ArrowUpIcon />
+            <ArrowRightIcon />
           </StyledButton>
         </StyledForm>
       </StyledFormWrap>
       {result && (
-        <>
+        <StyledResultWrap>
           {result.isLoading ? (
-            <StyledMessageText>Preparing recommendations...</StyledMessageText>
+            <StyledLoading>
+              <StyledLoadingMessage>
+                Preparing recommendations...
+              </StyledLoadingMessage>
+              <Loading />
+            </StyledLoading>
           ) : (
             <>
               {result.recommendations && (
                 <>
-                  <StyledMessageText>{result.introText}</StyledMessageText>
+                  <StyledIntroText>{result.introText}</StyledIntroText>
                   <StyledList>
                     {result?.recommendations.map((r) => (
                       <MovieCard key={r.title} movie={r} />
@@ -124,7 +156,7 @@ export function ChatView() {
               )}
             </>
           )}
-        </>
+        </StyledResultWrap>
       )}
     </>
   );
