@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import type { FormEvent } from "react";
 
-import { ArrowRight as ArrowRightIcon } from "@/components/ui/Icons";
+import { MailSend as MailSendIcon } from "@/components/ui/Icons";
 import { Loading } from "@/components/ui/Loading";
 import { MovieCard } from "@/components/ui/MovieCard";
 import type { AssistantMessage } from "@/types/types";
@@ -70,6 +70,11 @@ const StyledButton = styled.button`
     cursor: default;
     opacity: 0.6;
   }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const StyledResultWrap = styled.div`
@@ -129,7 +134,7 @@ export function ChatView() {
             required
           />
           <StyledButton aria-label="Send">
-            <ArrowRightIcon />
+            <MailSendIcon />
           </StyledButton>
         </StyledForm>
       </StyledFormWrap>
