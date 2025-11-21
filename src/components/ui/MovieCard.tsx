@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+import { ArrowOutward as ArrowOutwardIcon } from "@/components/ui/Icons";
 import type { Recommendation } from "@/types/types";
 
 const StyledCard = styled.div`
@@ -82,11 +83,15 @@ const StyledActions = styled.div`
   display: flex;
   gap: var(--sp-sm);
   align-items: center;
+  margin: var(--sp-md) 0;
 `;
 
 const StyledButton = styled.a`
-  width: 100%;
-  padding: 10px 16px;
+  display: inline-flex;
+  gap: var(--sp-xs);
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-xs) var(--sp-md);
   color: var(--c-text);
   background: var(--c-bg-secondary);
   border: none;
@@ -99,6 +104,11 @@ const StyledButton = styled.a`
     opacity: 0.5;
     cursor: default;
     pointer-events: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
   }
 `;
 
@@ -128,6 +138,7 @@ export function MovieCard({ movie }: MovieCardProps) {
             target="_blank"
           >
             Detail
+            <ArrowOutwardIcon />
           </StyledButton>
           <StyledButton
             aria-disabled={!movie.trailerKey}
@@ -139,6 +150,7 @@ export function MovieCard({ movie }: MovieCardProps) {
             target="_blank"
           >
             Trailer
+            <ArrowOutwardIcon />
           </StyledButton>
         </StyledActions>
       </StyledInfoSection>
