@@ -14,8 +14,8 @@
   --c-primary-dark: #4db55d; */
 
   /* Background */
-  --c-bg: #fdfdfe;
-  --c-bg-alt: #efefef;
+  --c-bg: #efefef;
+  --c-bg-alt: #ffffff;
   --c-bg-secondary: #f7f4ef;
   --c-bg-inverse: #2b2b2b;
 
@@ -145,7 +145,7 @@
    * ======================================== */
   --container-sm: 600px;
   --container-md: 900px;
-  --container-lg: 1200px;
+  --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1440px;
 }

@@ -104,7 +104,7 @@ body {
   word-break: break-word;
   word-wrap: break-word;
   color: var(--c-text);
-  background-color: var(--c-bg-alt);
+  background-color: var(--c-bg);
   font-family: "Outfit", sans-serif;
   line-height: 1.6;
   font-weight: 400;
