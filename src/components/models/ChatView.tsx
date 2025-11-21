@@ -35,13 +35,14 @@ const StyledFormWrap = styled.div`
 const StyledForm = styled.form`
   display: grid;
   padding: var(--sp-md);
-  background-color: #fff;
+  background-color: var(--c-bg-alt);
   border: 2px solid var(--primary);
   border-radius: var(--radius-xl);
 `;
 
 const StyledTextarea = styled.textarea`
   grid-column: 1 / -1;
+  resize: none;
 
   &:focus {
     outline: none;
@@ -49,6 +50,11 @@ const StyledTextarea = styled.textarea`
 
   &::placeholder {
     color: var(--c-text-light);
+  }
+
+  &:disabled {
+    background-color: var(--c-bg-alt);
+    opacity: 0.5;
   }
 `;
 
@@ -68,7 +74,7 @@ const StyledButton = styled.button`
 
   &[disabled] {
     cursor: default;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   svg {
@@ -132,8 +138,9 @@ export function ChatView() {
             name="user-input"
             rows={4}
             required
+            disabled={result?.isLoading}
           />
-          <StyledButton aria-label="Send">
+          <StyledButton aria-label="Send" disabled={result?.isLoading}>
             <MailSendIcon />
           </StyledButton>
         </StyledForm>
