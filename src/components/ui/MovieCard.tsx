@@ -78,22 +78,29 @@ const StyledReason = styled.p`
   line-height: var(--lh-normal);
 `;
 
-// const StyledViewDetailButton = styled.button`
-//   width: 100%;
-//   padding: 10px 16px;
-//   background: var(--primary);
-//   color: #fff;
-//   border: none;
-//   border-radius: 4px;
-//   font-size: 1.4rem;
-//   font-weight: 500;
-//   cursor: pointer;
-//   transition: opacity 0.2s;
+const StyledActions = styled.div`
+  display: flex;
+  gap: var(--sp-sm);
+  align-items: center;
+`;
 
-//   &:hover {
-//     opacity: 0.9;
-//   }
-// `;
+const StyledButton = styled.a`
+  width: 100%;
+  padding: 10px 16px;
+  color: var(--c-text);
+  background: var(--c-bg-secondary);
+  border: none;
+  border-radius: var(--radius-4xl);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+`;
 
 interface MovieCardProps {
   movie: Recommendation;
@@ -115,12 +122,28 @@ export function MovieCard({ movie }: MovieCardProps) {
             <StyledGenreChip key={index}>{genre}</StyledGenreChip>
           ))}
         </StyledGenreChips>
+        <StyledActions>
+          <StyledButton
+            href={`https://www.themoviedb.org/movie/${movie.id}`}
+            target="_blank"
+          >
+            Detail
+          </StyledButton>
+          <StyledButton
+            aria-disabled={!movie.trailerKey}
+            href={
+              movie.trailerKey
+                ? `https://www.youtube.com/watch?v=${movie.trailerKey}`
+                : ""
+            }
+            target="_blank"
+          >
+            Trailer
+          </StyledButton>
+        </StyledActions>
       </StyledInfoSection>
       {posterUrl && <StyledPoster src={posterUrl} alt={movie.title} />}
       <StyledReason>{movie.reason}</StyledReason>
-      {/* <StyledViewDetailButton onClick={onViewDetail}>
-          View Detail
-        </StyledViewDetailButton> */}
     </StyledCard>
   );
 }
