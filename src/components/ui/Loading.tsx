@@ -11,15 +11,28 @@ const spin = keyframes`
 `;
 
 const StyledSpinner = styled.div`
-  width: 32px;
-  height: 32px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-top-color: var(--c-primary);
   border-right-color: var(--c-primary);
   border-radius: 50%;
   animation: ${spin} 1s linear infinite;
+
+  &.-small {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+  }
+
+  &.-medium {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
-export const Loading = () => {
-  return <StyledSpinner />;
+interface LoadingProps {
+  size?: "small" | "medium";
+}
+
+export const Loading = ({ size = "medium" }: LoadingProps) => {
+  return <StyledSpinner className={`-${size}`} />;
 };
