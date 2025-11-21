@@ -48,3 +48,34 @@ export async function searchMovies(
 
   return response;
 }
+
+export async function getTrailer(id: number, token: string): Promise<string> {
+  const url = `${baseURL}/movie/${id}/videos`;
+
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Internal Error");
+    }
+
+    const json = await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const videos = json.results as any[];
+
+    const trailer = videos.find(
+      (v) => v.site === "YouTube" && v.type === "Trailer" && v.official === true
+    );
+
+    return trailer?.key || "";
+  } catch (err) {
+    console.error(err);
+    return "";
+  }
+}
