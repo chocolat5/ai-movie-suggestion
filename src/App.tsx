@@ -8,7 +8,7 @@ const StyledContainer = styled.section`
   flex-direction: column;
   max-width: var(--container-sm);
   margin: 0 auto;
-  padding: var(--sp-3xl) var(--sp-xl);
+  padding: var(--sp-3xl) var(--sp-xl) 0;
 `;
 
 const StyledTitle = styled.h1`
@@ -37,20 +37,22 @@ const StyledChatContainer = styled.div`
 
 function App() {
   return (
-    <StyledContainer>
-      <StyledTitle>
-        <MovieIcon />
-        AI Movie Suggestion
-      </StyledTitle>
-      <StyledText>
-        Type your favorite movies from all time or movies you liked recently.
-        <br />
-        Get movies to watch next!
-      </StyledText>
+    <>
+      <StyledContainer>
+        <StyledTitle>
+          <MovieIcon />
+          AI Movie Suggestion
+        </StyledTitle>
+        <StyledText>
+          Type your favorite movies from all time or movies you liked recently.
+          <br />
+          Get movies to watch next!
+        </StyledText>
+      </StyledContainer>
       <StyledChatContainer>
         <ChatView />
       </StyledChatContainer>
-    </StyledContainer>
+    </>
   );
 }
 
