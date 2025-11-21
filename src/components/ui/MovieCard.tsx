@@ -4,76 +4,78 @@ import type { Recommendation } from "@/types/types";
 
 const StyledCard = styled.div`
   position: relative;
-  display: flex;
-  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: var(--sp-md);
+  padding: var(--sp-md);
+  background: var(--c-bg-alt);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  background: #fff;
 `;
 
 const StyledMatchChip = styled.div`
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #fff;
-  color: var(--primary);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 1.2rem;
+  display: inline-block;
+  background: var(--c-bg-inverse);
+  color: var(--c-text-inverse);
+  padding: 2px var(--sp-sm);
+  border-radius: var(--radius-2xl);
+  font-size: var(--fs-xs);
   font-weight: 600;
   z-index: 1;
 `;
 
-const StyledPosterSection = styled.div`
-  flex: 0 0 24%;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  background: #f0f0f0;
-`;
-
 const StyledPoster = styled.img`
+  grid-column: 2 / -1;
+  grid-row: 1 / 2;
+  aspect-ratio: 2 / 3;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: var(--radius-2xl);
 `;
 
 const StyledInfoSection = styled.div`
-  padding: 16px;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
 `;
 
 const StyledTitle = styled.h3`
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0 0 4px 0;
+  margin: var(--sp-md) 0 0 0;
   color: #333;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: var(--lh-tight);
 `;
 
 const StyledYear = styled.p`
-  font-size: 1.4rem;
+  margin: var(--sp-xs) 0 0 0;
   color: #666;
-  margin: 0 0 12px 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-tight);
 `;
 
 const StyledGenreChips = styled.div`
   display: flex;
-  gap: 6px;
+  gap: var(--sp-sm);
+  margin: var(--sp-sm) 0 0 0;
   flex-wrap: wrap;
-  margin-bottom: 12px;
 `;
 
 const StyledGenreChip = styled.span`
-  padding: 4px 12px;
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 16px;
-  font-size: 1.2rem;
-  color: #666;
+  padding: 2px var(--sp-sm);
+  background: var(--c-bg-alt);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-2xl);
+  font-size: var(--fs-xs);
+  color: var(--c-text-sub);
 `;
 
 const StyledReason = styled.p`
-  font-size: 1.4rem;
-  color: #555;
-  line-height: 1.6;
-  margin: 0 0 16px 0;
+  grid-column: 1 / -1;
+  grid-row: 2 / 3;
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: var(--lh-normal);
 `;
 
 // const StyledViewDetailButton = styled.button`
@@ -104,11 +106,8 @@ export function MovieCard({ movie }: MovieCardProps) {
 
   return (
     <StyledCard>
-      <StyledMatchChip>{movie.matchPercentage}% match</StyledMatchChip>
-      <StyledPosterSection>
-        {posterUrl && <StyledPoster src={posterUrl} alt={movie.title} />}
-      </StyledPosterSection>
       <StyledInfoSection>
+        <StyledMatchChip>{movie.matchPercentage}% match</StyledMatchChip>
         <StyledTitle>{movie.title}</StyledTitle>
         <StyledYear>{movie.year}</StyledYear>
         <StyledGenreChips>
@@ -116,11 +115,12 @@ export function MovieCard({ movie }: MovieCardProps) {
             <StyledGenreChip key={index}>{genre}</StyledGenreChip>
           ))}
         </StyledGenreChips>
-        <StyledReason>{movie.reason}</StyledReason>
-        {/* <StyledViewDetailButton onClick={onViewDetail}>
+      </StyledInfoSection>
+      {posterUrl && <StyledPoster src={posterUrl} alt={movie.title} />}
+      <StyledReason>{movie.reason}</StyledReason>
+      {/* <StyledViewDetailButton onClick={onViewDetail}>
           View Detail
         </StyledViewDetailButton> */}
-      </StyledInfoSection>
     </StyledCard>
   );
 }
