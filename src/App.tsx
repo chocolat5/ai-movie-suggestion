@@ -34,11 +34,6 @@ const StyledText = styled.p`
   font-size: var(--fs-md);
 `;
 
-const StyledTextTips = styled.p`
-  color: var(--c-text-sub);
-  font-size: var(--fs-sm);
-`;
-
 const StyledChatContainer = styled.div`
   margin: var(--sp-xl) 0 0;
 `;
@@ -53,12 +48,9 @@ function App() {
         </StyledTitle>
         <StyledText>
           Type your favorite movies from all time or movies you liked recently.
+          <br />
           Get movies to watch next!
         </StyledText>
-        <StyledTextTips>
-          Tip: Include release years or other details for more accurate
-          suggestions (e.g., Kokuho (2025, Japanese) ).
-        </StyledTextTips>
       </StyledContainer>
       <StyledChatContainer>
         <ChatView />

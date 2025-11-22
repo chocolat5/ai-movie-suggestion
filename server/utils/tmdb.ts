@@ -32,14 +32,15 @@ export async function searchMovies(
     }
 
     const json = await res.json();
-    const temData = json.results;
+    const tempData = json.results;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    response = temData.map((r: any) => ({
+    response = tempData.map((r: any) => ({
       id: r.id,
       title: r.title,
       year: r.release_date ? new Date(r.release_date).getFullYear() : 0,
       posterPath: r.poster_path,
+      originalLanguage: r.original_language,
       genres: getGenreNames(r.genre_ids),
     }));
   } catch (err) {
@@ -47,4 +48,35 @@ export async function searchMovies(
   }
 
   return response;
+}
+
+export async function getTrailer(id: number, token: string): Promise<string> {
+  const url = `${baseURL}/movie/${id}/videos`;
+
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Internal Error");
+    }
+
+    const json = await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const videos = json.results as any[];
+
+    const trailer = videos.find(
+      (v) => v.site === "YouTube" && v.type === "Trailer" && v.official === true
+    );
+
+    return trailer?.key || "";
+  } catch (err) {
+    console.error(err);
+    return "";
+  }
 }

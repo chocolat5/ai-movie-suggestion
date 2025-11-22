@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+import { ArrowOutward as ArrowOutwardIcon } from "@/components/ui/Icons";
 import type { Recommendation } from "@/types/types";
 
 const StyledCard = styled.div`
@@ -19,7 +20,7 @@ const StyledMatchChip = styled.div`
   color: var(--c-text-inverse);
   padding: 2px var(--sp-sm);
   border-radius: var(--radius-2xl);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: 600;
   z-index: 1;
 `;
@@ -29,9 +30,25 @@ const StyledPoster = styled.img`
   grid-row: 1 / 2;
   aspect-ratio: 2 / 3;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   border-radius: var(--radius-2xl);
+  background-color: var(--c-bg);
+`;
+
+const StyledPosterBlank = styled.div`
+  grid-column: 2 / -1;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  height: auto;
+  color: var(--c-text-light);
+  border-radius: var(--radius-2xl);
+  background-color: var(--c-bg);
+  font-size: var(--fs-xs);
 `;
 
 const StyledInfoSection = styled.div`
@@ -78,22 +95,38 @@ const StyledReason = styled.p`
   line-height: var(--lh-normal);
 `;
 
-// const StyledViewDetailButton = styled.button`
-//   width: 100%;
-//   padding: 10px 16px;
-//   background: var(--primary);
-//   color: #fff;
-//   border: none;
-//   border-radius: 4px;
-//   font-size: 1.4rem;
-//   font-weight: 500;
-//   cursor: pointer;
-//   transition: opacity 0.2s;
+const StyledActions = styled.div`
+  display: flex;
+  gap: var(--sp-sm);
+  align-items: center;
+  margin: var(--sp-md) 0 0;
+`;
 
-//   &:hover {
-//     opacity: 0.9;
-//   }
-// `;
+const StyledButton = styled.a`
+  display: inline-flex;
+  gap: var(--sp-xs);
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-xs) var(--sp-md);
+  color: var(--c-text);
+  background: var(--c-bg-secondary);
+  border: none;
+  border-radius: var(--radius-4xl);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+
+  &[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+`;
 
 interface MovieCardProps {
   movie: Recommendation;
@@ -110,17 +143,41 @@ export function MovieCard({ movie }: MovieCardProps) {
         <StyledMatchChip>{movie.matchPercentage}% match</StyledMatchChip>
         <StyledTitle>{movie.title}</StyledTitle>
         <StyledYear>{movie.year}</StyledYear>
-        <StyledGenreChips>
-          {movie.genres.map((genre, index) => (
-            <StyledGenreChip key={index}>{genre}</StyledGenreChip>
-          ))}
-        </StyledGenreChips>
+        {movie.genres.length > 0 && (
+          <StyledGenreChips>
+            {movie.genres.map((genre, index) => (
+              <StyledGenreChip key={index}>{genre}</StyledGenreChip>
+            ))}
+          </StyledGenreChips>
+        )}
+        <StyledActions>
+          <StyledButton
+            href={`https://www.themoviedb.org/movie/${movie.id}`}
+            target="_blank"
+          >
+            Detail
+            <ArrowOutwardIcon />
+          </StyledButton>
+          <StyledButton
+            aria-disabled={!movie.trailerKey}
+            href={
+              movie.trailerKey
+                ? `https://www.youtube.com/watch?v=${movie.trailerKey}`
+                : ""
+            }
+            target="_blank"
+          >
+            Trailer
+            <ArrowOutwardIcon />
+          </StyledButton>
+        </StyledActions>
       </StyledInfoSection>
-      {posterUrl && <StyledPoster src={posterUrl} alt={movie.title} />}
+      {posterUrl ? (
+        <StyledPoster src={posterUrl} alt={movie.title} />
+      ) : (
+        <StyledPosterBlank>No Image</StyledPosterBlank>
+      )}
       <StyledReason>{movie.reason}</StyledReason>
-      {/* <StyledViewDetailButton onClick={onViewDetail}>
-          View Detail
-        </StyledViewDetailButton> */}
     </StyledCard>
   );
 }

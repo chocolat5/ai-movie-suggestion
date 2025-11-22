@@ -15,18 +15,18 @@ export function ArrowUp(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function ArrowRight(props: SVGProps<SVGSVGElement>) {
+export function ArrowOutward(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 16 16"
+      viewBox="0 0 24 24"
       width="1em"
       height="1em"
       {...props}
     >
       <path
         fill="currentColor"
-        d="m9.707 13.707l5-5a1 1 0 0 0 0-1.414l-5-5a.999.999 0 1 0-1.414 1.414L11.586 7H2a1 1 0 0 0 0 2h9.586l-3.293 3.293a.997.997 0 0 0 0 1.414a1 1 0 0 0 1.414 0"
+        d="M6 7c0 .55.45 1 1 1h7.59l-8.88 8.88a.996.996 0 1 0 1.41 1.41L16 9.41V17c0 .55.45 1 1 1s1-.45 1-1V7c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1"
       ></path>
     </svg>
   );
@@ -59,6 +59,26 @@ export function Movie(props: SVGProps<SVGSVGElement>) {
       <path
         fill="currentColor"
         d="M18 4v1h-2V4c0-.55-.45-1-1-1H9c-.55 0-1 .45-1 1v1H6V4c0-.55-.45-1-1-1s-1 .45-1 1v16c0 .55.45 1 1 1s1-.45 1-1v-1h2v1c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-1h2v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1s-1 .45-1 1M8 17H6v-2h2zm0-4H6v-2h2zm0-4H6V7h2zm10 8h-2v-2h2zm0-4h-2v-2h2zm0-4h-2V7h2z"
+      ></path>
+    </svg>
+  );
+}
+
+export function MailSend(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 14 14"
+      width="1em"
+      height="1em"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 8L.5 5.5l13-5l-5 13zm0 0l3-3"
       ></path>
     </svg>
   );
