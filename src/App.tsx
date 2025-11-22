@@ -34,6 +34,12 @@ const StyledText = styled.p`
   font-size: var(--fs-md);
 `;
 
+const StyledTextNotes = styled.p`
+  color: var(--c-text-sub);
+  margin: var(--sp-md) 0 0;
+  font-size: var(--fs-sm);
+`;
+
 const StyledChatContainer = styled.div`
   margin: var(--sp-xl) 0 0;
 `;
@@ -51,6 +57,10 @@ function App() {
           <br />
           Get movies to watch next!
         </StyledText>
+        <StyledTextNotes>
+          Tip: Adding the release year helps us find the exact movie. <br />
+          e.g., Inception (2010), Parasite (2019)
+        </StyledTextNotes>
       </StyledContainer>
       <StyledChatContainer>
         <ChatView />
