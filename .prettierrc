@@ -6,9 +6,5 @@
   "semi": true,
   "singleQuote": false,
   "useTabs": false,
-  "printWidth": 80,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^react$", "^react/(.*)$", "^@?\\w", "", "^@/(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "printWidth": 80
 }

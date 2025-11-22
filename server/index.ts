@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { streamText } from "hono/streaming";
 
 import { recommendationsTool } from "./tools/recommendations";
 import { searchMovieTool } from "./tools/searchMovie";
@@ -10,9 +9,9 @@ import { enrichRecommendations } from "./utils/helpers";
 import { searchMovies } from "./utils/tmdb";
 
 // const model = "claude-sonnet-4-5";
-const model = "claude-sonnet-4-0";
-// const model = "claude-haiku-4-5";
-const maxTokens = 1000;
+// const model = "claude-sonnet-4-0";
+const model = "claude-haiku-4-5";
+const maxTokens = 700;
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -49,13 +48,11 @@ app.get("/api/msg", async (c) => {
 });
 
 app.post("/api/chat", async (c) => {
-  console.log("=== POST /api/chat START ===");
-
   const ai = new Anthropic({
     apiKey: c.env.ANTHROPIC_API_KEY,
   });
 
-  const { text } = await c.req.json();
+  const { text, browserLang } = await c.req.json();
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: text }];
 
   let iteration = 0;
@@ -90,7 +87,9 @@ app.post("/api/chat", async (c) => {
           - Users may provide movie titles in ANY language (English, Japanese, etc.)
           - Always use search_movie tool to validate titles before making recommendations
           - If search returns multiple results, use context to pick the right one (or ask user)
-          - Respond in the language the user is using
+          - When you search movies with the serch_movie tool, check the original_language field
+          - If the movies have original_language: "ja", respond in Japanese
+          - User's browser language is ${browserLang}, use this as a hint. Otherwise, respond in the language the user is using
 
           Your goal: Provide personalized movie recommendations based on validated movie data.
           `,
@@ -102,28 +101,26 @@ app.post("/api/chat", async (c) => {
     // get movies information using tool
     if (response.stop_reason === "tool_use") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const toolResults: any[] = [];
-      for (const block of response.content) {
-        if (block.type !== "tool_use") continue;
-
-        const { query, year } = block.input as {
-          query: string;
-          year?: number;
-        };
-
-        // call searchMovies function
-        const movieResults = await searchMovies(
-          query,
-          c.env.TMDB_ACCESS_TOKEN,
-          year
-        );
-
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: block.id,
-          content: JSON.stringify(movieResults),
-        });
-      }
+      const toolResults: any[] = await Promise.all(
+        response.content
+          .filter((block) => block.type === "tool_use")
+          .map(async (block) => {
+            const { query, year } = block.input as {
+              query: string;
+              year?: number;
+            };
+            const movieResults = await searchMovies(
+              query,
+              c.env.TMDB_ACCESS_TOKEN,
+              year
+            );
+            return {
+              type: "tool_result",
+              tool_use_id: block.id,
+              content: JSON.stringify(movieResults),
+            };
+          })
+      );
 
       // add assistant's response to messages
       messages.push({ role: "assistant", content: response.content });
@@ -169,6 +166,22 @@ app.post("/api/chat", async (c) => {
       introText: string;
       recommendations: AIRecommendation[];
     };
+
+    // Safety check
+    if (!aiData.recommendations || !Array.isArray(aiData.recommendations)) {
+      console.error(
+        "ERROR: recommendations is not an array:",
+        aiData.recommendations
+      );
+      return c.json(
+        {
+          error: "Invalid AI response format",
+          details: "recommendations field is missing or invalid",
+        },
+        500
+      );
+    }
+
     const recommendations = await enrichRecommendations(
       aiData.recommendations,
       c.env.TMDB_ACCESS_TOKEN
@@ -180,65 +193,6 @@ app.post("/api/chat", async (c) => {
   }
 
   return c.json({ error: "Failed to generate recommendations" }, 500);
-});
-
-app.post("/api/stream", async (c) => {
-  console.log("POST /stream");
-
-  const ai = new Anthropic({
-    apiKey: c.env.ANTHROPIC_API_KEY,
-  });
-
-  const { text } = await c.req.json();
-
-  const stream = ai.messages.stream({
-    model,
-    max_tokens: maxTokens,
-    system: [
-      {
-        type: "text",
-        text: `You are a movie recommendation expert. Today is ${new Date().toISOString().split("T")[0]}
-
-        IMPORTANT INSTRUCTIONS:
-        - Users may provide movie titles in ANY language (English, Japanese, localized titles, etc.)
-        - Example: "国宝" is a Japanese film, NOT Chinese
-        - Carefully identify the actual movie regardless of title language
-        - Respond in the language the user is using
-
-        Analyze user's movie taste and suggest similar movies they might enjoy.
-
-        If a movie title is ambiguous or could refer to multiple films:
-        - Ask the user for clarification (year, director, or country)
-        `,
-      },
-      // {
-      //   type: "text",
-      //   text: "You are a movie recommendation expert. Based on user's favorite movies, analyze their taste and suggest 3-5 similar movies they haven't seen. Include brief reasons for each recommendation.",
-      // },
-      // {
-      //   type: "text",
-      //   text: "You are an enthusiastic movie buff who loves sharing hidden gems. Recommend movies with brief, engaging descriptions that spark curiosity.",
-      // },
-    ],
-    messages: [
-      {
-        role: "user",
-        content: text,
-      },
-    ],
-  });
-
-  return streamText(c, async (streamWriter) => {
-    for await (const chunk of stream) {
-      if (
-        chunk.type === "content_block_delta" &&
-        chunk.delta.type === "text_delta"
-      ) {
-        // return plain text
-        await streamWriter.write(chunk.delta.text);
-      }
-    }
-  });
 });
 
 export default app;

@@ -1,18 +1,17 @@
-import { useState } from "react";
-
 import styled from "@emotion/styled";
 
 import { ChatView } from "@/components/models/ChatView";
-import { StreamView } from "@/components/models/StreamView";
 import { Movie as MovieIcon } from "@/components/ui/Icons";
-import { TabBar } from "@/components/ui/TabBar";
+
+const StyledWrap = styled.div`
+  padding: var(--sp-3xl) var(--sp-xl);
+`;
 
 const StyledContainer = styled.section`
   display: flex;
   flex-direction: column;
   max-width: var(--container-sm);
   margin: 0 auto;
-  padding: var(--sp-3xl) var(--sp-xl);
 `;
 
 const StyledTitle = styled.h1`
@@ -35,25 +34,28 @@ const StyledText = styled.p`
   font-size: var(--fs-md);
 `;
 
-function App() {
-  const [view, setView] = useState<"stream" | "chat">("chat");
+const StyledChatContainer = styled.div`
+  margin: var(--sp-xl) 0 0;
+`;
 
+function App() {
   return (
-    <StyledContainer>
-      <StyledTitle>
-        <MovieIcon />
-        AI Movie Suggestion
-      </StyledTitle>
-      <StyledText>
-        Type your favorite movies from all time or movies you liked recently.
-        <br />
-        Get movies to watch next!
-      </StyledText>
-      <div>
-        <TabBar current={view} onViewChange={setView} />
-        {view === "chat" ? <ChatView /> : <StreamView />}
-      </div>
-    </StyledContainer>
+    <StyledWrap>
+      <StyledContainer>
+        <StyledTitle>
+          <MovieIcon />
+          AI Movie Suggestion
+        </StyledTitle>
+        <StyledText>
+          Type your favorite movies from all time or movies you liked recently.
+          <br />
+          Get movies to watch next!
+        </StyledText>
+      </StyledContainer>
+      <StyledChatContainer>
+        <ChatView />
+      </StyledChatContainer>
+    </StyledWrap>
   );
 }
 

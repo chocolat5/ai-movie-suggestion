@@ -9,25 +9,25 @@
    * ======================================== */
 
   /* Primary */
-  --c-primary: #6acf7a;
-  --c-primary-light: #8de89a;
-  --c-primary-dark: #4db55d;
+  --c-primary: #2b2b2b;
+  /* --c-primary-light: #8de89a;
+  --c-primary-dark: #4db55d; */
 
   /* Background */
-  --c-bg: #fdfcfa;
+  --c-bg: #efefef;
   --c-bg-alt: #ffffff;
-  --c-bg-secondary: #f7f4ef;
-  --c-bg-inverse: #1a1a1a;
+  --c-bg-secondary: #e1e1e1;
+  --c-bg-inverse: #2b2b2b;
 
   /* Text */
-  --c-text: #1a1a1a;
+  --c-text: #2b2b2b;
   --c-text-sub: #5a5a5a;
   --c-text-light: #8f8f8f;
-  --c-text-inverse: #ffffff;
+  --c-text-inverse: #fdfdfe;
 
   /* Link */
-  --c-link: #6acf7a;
-  --c-link-hover: #4db55d;
+  --c-link: #2b2b2b;
+  --c-link-hover: #2b2b2b;
 
   /* Border */
   --c-border: #ddd8cf;
@@ -145,7 +145,7 @@
    * ======================================== */
   --container-sm: 600px;
   --container-md: 900px;
-  --container-lg: 1200px;
+  --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1440px;
 }

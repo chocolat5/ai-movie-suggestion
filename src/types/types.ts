@@ -5,6 +5,7 @@ export interface Recommendation {
   posterPath: string;
   genres: string[];
   reason: string;
+  trailerKey: string;
   matchPercentage: number;
 }
 

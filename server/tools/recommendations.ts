@@ -14,22 +14,23 @@ export const recommendationsTool = {
         items: {
           type: "object",
           properties: {
-            title: { type: "string" },
+            title: {
+              type: "string",
+              description:
+                "Original international title (usually English). Do NOT use translated/localized titles.",
+            },
             year: { type: "number" },
             reason: { type: "string" },
-            matchPercentage: { type: "number" },
+            matchPercentage: {
+              type: "number",
+              description:
+                "Match percentage (86 - 100), at least one or two should be 90%+, should not include matches less than 85%",
+            },
           },
-          required: [
-            "title",
-            "year",
-            "reason",
-            "matchPercentage",
-            "posterPath",
-            "genres",
-          ],
+          required: ["title", "year", "reason", "matchPercentage"],
         },
-        minItems: 5,
-        maxItems: 8,
+        minItems: 4,
+        maxItems: 6,
       },
     },
     required: ["recommendations", "introText"],
