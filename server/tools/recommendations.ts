@@ -7,7 +7,7 @@ export const recommendationsTool = {
       introText: {
         type: "string",
         description:
-          "A welcoming introduction text that summarizes the user's interests or preferences (NOT specific movie titles they mentioned) and states how many recommendations are being provided. Format: 'Based on your interest in [themes/genres/mood], here are {number} movie recommendations for you:'",
+          "A welcoming introduction text that summarizes the user's interests or preferences (NOT specific movie titles they mentioned) and states how many recommendations are being provided. Example: 'Based on your interest in [themes/genres/mood], here are {number} movie recommendations for you:'",
       },
       recommendations: {
         type: "array",
