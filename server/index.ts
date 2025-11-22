@@ -52,7 +52,7 @@ app.post("/api/chat", async (c) => {
     apiKey: c.env.ANTHROPIC_API_KEY,
   });
 
-  const { text } = await c.req.json();
+  const { text, browserLang } = await c.req.json();
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: text }];
 
   let iteration = 0;
@@ -87,7 +87,9 @@ app.post("/api/chat", async (c) => {
           - Users may provide movie titles in ANY language (English, Japanese, etc.)
           - Always use search_movie tool to validate titles before making recommendations
           - If search returns multiple results, use context to pick the right one (or ask user)
-          - Respond in the language the user is using
+          - When you search movies with the serch_movie tool, check the original_language field
+          - If the movies have original_language: "ja", respond in Japanese
+          - User's browser language is ${browserLang}, use this as a hint. Otherwise, respond in the language the user is using
 
           Your goal: Provide personalized movie recommendations based on validated movie data.
           `,

@@ -104,6 +104,7 @@ const StyledList = styled.div`
 export function ChatView() {
   const [result, setResult] = useState<AssistantMessage | null>(null);
   const targetRef = useRef<HTMLDivElement | null>(null);
+  const browserLang = navigator.language;
 
   async function handleChat(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -119,7 +120,7 @@ export function ChatView() {
     setResult({ role: "assistant", introText: "", isLoading: true });
 
     // sream and update the last message
-    const res = await getChat(userInput);
+    const res = await getChat(userInput, browserLang);
 
     flushSync(() => {
       setResult({

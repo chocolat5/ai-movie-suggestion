@@ -8,6 +8,7 @@ export interface Movie {
   title: string;
   year: number;
   posterPath: string;
+  originalLanguage: string;
   genres: string[];
 }
 

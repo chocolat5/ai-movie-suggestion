@@ -3,12 +3,13 @@
 import type { Recommendation } from "@/types/types";
 
 export const getChat = async (
-  text: string
+  text: string,
+  browserLang: string
 ): Promise<{ recommendations: Recommendation[]; introText: string }> => {
   const response = await fetch("http://localhost:8787/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, browserLang }),
   });
 
   const data = await response.json();

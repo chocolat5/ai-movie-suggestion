@@ -40,6 +40,7 @@ export async function searchMovies(
       title: r.title,
       year: r.release_date ? new Date(r.release_date).getFullYear() : 0,
       posterPath: r.poster_path,
+      originalLanguage: r.original_language,
       genres: getGenreNames(r.genre_ids),
     }));
   } catch (err) {
