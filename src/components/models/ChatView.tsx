@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import styled from "@emotion/styled";
 import type { FormEvent } from "react";
+import { flushSync } from "react-dom";
 
 import { MailSend as MailSendIcon } from "@/components/ui/Icons";
 import { Loading } from "@/components/ui/Loading";
@@ -85,8 +86,9 @@ const StyledButton = styled.button`
 
 const StyledResultWrap = styled.div`
   max-width: var(--container-lg);
-  margin: var(--sp-lg) auto;
-  padding: 0 var(--sp-xl);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: var(--sp-lg) var(--sp-xl);
 `;
 
 const StyledList = styled.div`
@@ -101,6 +103,7 @@ const StyledList = styled.div`
 
 export function ChatView() {
   const [result, setResult] = useState<AssistantMessage | null>(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
 
   async function handleChat(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -112,21 +115,23 @@ export function ChatView() {
 
     if (!userInput) return;
 
-    // clear textarea
-    // e.currentTarget.reset();
-
     // Add empty assistant message
     setResult({ role: "assistant", introText: "", isLoading: true });
 
     // sream and update the last message
     const res = await getChat(userInput);
 
-    setResult({
-      role: "assistant",
-      recommendations: res.recommendations,
-      introText: res.introText,
-      isLoading: false,
+    flushSync(() => {
+      setResult({
+        role: "assistant",
+        recommendations: res.recommendations,
+        introText: res.introText,
+        isLoading: false,
+      });
     });
+
+    // window scroll
+    targetRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -146,7 +151,7 @@ export function ChatView() {
         </StyledForm>
       </StyledFormWrap>
       {result && (
-        <StyledResultWrap>
+        <>
           {result.isLoading ? (
             <StyledLoading>
               <StyledLoadingMessage>
@@ -155,7 +160,7 @@ export function ChatView() {
               <Loading />
             </StyledLoading>
           ) : (
-            <>
+            <StyledResultWrap ref={targetRef}>
               {result.recommendations && (
                 <>
                   <StyledIntroText>{result.introText}</StyledIntroText>
@@ -166,9 +171,9 @@ export function ChatView() {
                   </StyledList>
                 </>
               )}
-            </>
+            </StyledResultWrap>
           )}
-        </StyledResultWrap>
+        </>
       )}
     </>
   );
