@@ -101,7 +101,7 @@ const StyledButton = styled.a`
   cursor: pointer;
 
   &[aria-disabled="true"] {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: default;
     pointer-events: none;
   }
