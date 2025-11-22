@@ -33,6 +33,22 @@ const StyledPoster = styled.img`
   height: auto;
   object-fit: cover;
   border-radius: var(--radius-2xl);
+  background-color: var(--c-bg);
+`;
+
+const StyledPosterBlank = styled.div`
+  grid-column: 2 / -1;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  height: auto;
+  color: var(--c-text-light);
+  border-radius: var(--radius-2xl);
+  background-color: var(--c-bg);
+  font-size: var(--fs-xs);
 `;
 
 const StyledInfoSection = styled.div`
@@ -127,11 +143,13 @@ export function MovieCard({ movie }: MovieCardProps) {
         <StyledMatchChip>{movie.matchPercentage}% match</StyledMatchChip>
         <StyledTitle>{movie.title}</StyledTitle>
         <StyledYear>{movie.year}</StyledYear>
-        <StyledGenreChips>
-          {movie.genres.map((genre, index) => (
-            <StyledGenreChip key={index}>{genre}</StyledGenreChip>
-          ))}
-        </StyledGenreChips>
+        {movie.genres.length > 0 && (
+          <StyledGenreChips>
+            {movie.genres.map((genre, index) => (
+              <StyledGenreChip key={index}>{genre}</StyledGenreChip>
+            ))}
+          </StyledGenreChips>
+        )}
         <StyledActions>
           <StyledButton
             href={`https://www.themoviedb.org/movie/${movie.id}`}
@@ -154,7 +172,11 @@ export function MovieCard({ movie }: MovieCardProps) {
           </StyledButton>
         </StyledActions>
       </StyledInfoSection>
-      {posterUrl && <StyledPoster src={posterUrl} alt={movie.title} />}
+      {posterUrl ? (
+        <StyledPoster src={posterUrl} alt={movie.title} />
+      ) : (
+        <StyledPosterBlank>No Image</StyledPosterBlank>
+      )}
       <StyledReason>{movie.reason}</StyledReason>
     </StyledCard>
   );
