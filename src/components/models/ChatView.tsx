@@ -139,7 +139,7 @@ export function ChatView() {
       <StyledFormWrap>
         <StyledForm method="post" onSubmit={handleChat}>
           <StyledTextarea
-            placeholder="Interstellar, Kokuho (2025) ..."
+            placeholder="e.g., Interstellar, Kokuho (2025) ..."
             name="user-input"
             rows={4}
             required
