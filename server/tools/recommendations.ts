@@ -14,7 +14,11 @@ export const recommendationsTool = {
         items: {
           type: "object",
           properties: {
-            title: { type: "string" },
+            title: {
+              type: "string",
+              description:
+                "Original international title (usually English). Do NOT use translated/localized titles.",
+            },
             year: { type: "number" },
             reason: { type: "string" },
             matchPercentage: {
