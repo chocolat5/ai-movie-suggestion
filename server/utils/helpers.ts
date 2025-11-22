@@ -22,7 +22,9 @@ export async function enrichRecommendations(
         }
       }
 
-      const trailerKey = await getTrailer(tmdbData.id, tmdbToken);
+      const trailerKey = tmdbData
+        ? await getTrailer(tmdbData.id, tmdbToken)
+        : "";
 
       if (tmdbData) {
         return {
